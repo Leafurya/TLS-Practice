@@ -1,0 +1,4 @@
+﻿  TLSClient.cpp
+D:\GitHub\TLS-Practice\cpp\TLSClient\TLSClient.cpp(48,21): warning C4244: '인수': 'SOCKET'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+D:\GitHub\TLS-Practice\cpp\TLSClient\TLSClient.cpp(71,53): warning C4267: '인수': 'size_t'에서 'int'(으)로 변환하면서 데이터가 손실될 수 있습니다.
+  TLSClient.vcxproj -> D:\GitHub\TLS-Practice\cpp\TLSClient\x64\Debug\TLSClient.exe
