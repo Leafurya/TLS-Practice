@@ -1,1 +1,2 @@
 D:\GitHub\TLS-Practice\cpp\TLSServer\x64\Debug\TLSServer.exe
+E:\GitHub\TLS-Practice\cpp\TLSServer\x64\Debug\TLSServer.exe

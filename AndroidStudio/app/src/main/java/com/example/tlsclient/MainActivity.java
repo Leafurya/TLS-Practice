@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.view.WindowCompat;
@@ -23,9 +24,12 @@ import com.example.tlsclient.databinding.ActivityMainBinding;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import java.io.FileInputStream;
+import java.io.IOException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.TrustManagerFactory;
@@ -35,18 +39,26 @@ public class MainActivity extends AppCompatActivity {
 	private AppBarConfiguration appBarConfiguration;
 	private ActivityMainBinding binding;
 	private Communicate comm;
-	KeyStore trustStore;
+	MainHandler handler=new MainHandler();
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
-		try {
-			trustStore=KeyStore.getInstance(KeyStore.getDefaultType());
-			trustStore.getCertificate("aiv lab ca");
-		} catch (KeyStoreException e) {
-			throw new RuntimeException(e);
-		}
+//		try {
+//			trustStore=KeyStore.getInstance("AndroidKeyStore");
+//			trustStore.load(null);
+//			Log.d("exist",""+trustStore.containsAlias("aiv lab ca"));
+////			trustStore.getCertificate("aiv lab ca");
+//		} catch (KeyStoreException e) {
+//			throw new RuntimeException(e);
+//		} catch (CertificateException e) {
+//			throw new RuntimeException(e);
+//		} catch (IOException e) {
+//			throw new RuntimeException(e);
+//		} catch (NoSuchAlgorithmException e) {
+//			throw new RuntimeException(e);
+//		}
 
 
 		binding = ActivityMainBinding.inflate(getLayoutInflater());
@@ -57,13 +69,21 @@ public class MainActivity extends AppCompatActivity {
 		NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
 		appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
 		NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-//		comm=new Communicate(this.handler,trustStore);
-//		comm.start();
+		/*
+		안드로이드는 BKS KeyStore를 만들어서 지정해줘야 한다고 한다.
+		 */
+		comm=new Communicate(this.handler,getResources().openRawResource(R.raw.androidkey));
+//		comm=new PlainCommunicate(this.handler);
+		comm.start();
 		binding.fab.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View view) {
-//				comm.Send();
+//				try {
+//					Log.d("exist",""+trustStore.containsAlias("aiv lab ca"));
+//				} catch (KeyStoreException e) {
+//					throw new RuntimeException(e);
+//				}
+				comm.Send();
 //				Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
 //						.setAnchorView(R.id.fab)
 //						.setAction("Action", null).show();
@@ -100,13 +120,12 @@ public class MainActivity extends AppCompatActivity {
 				|| super.onSupportNavigateUp();
 	}
 
-//	@SuppressLint("HandlerLeak")
-//	Handler handler=new Handler(){
-//		@Override
-//		public void handleMessage(@NonNull Message msg){
-//			Snackbar.make(binding.fab, msg.obj.toString(), Snackbar.LENGTH_LONG)
-//					.setAnchorView(R.id.fab)
-//					.setAction("Action", null).show();
-//		}
-//	};
+	class MainHandler extends Handler{
+		@Override
+		public void handleMessage(Message msg){
+			Snackbar.make(binding.fab, msg.obj.toString(), Snackbar.LENGTH_LONG)
+					.setAnchorView(R.id.fab)
+					.setAction("Action", null).show();
+		}
+	}
 }

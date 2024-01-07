@@ -12,6 +12,7 @@ import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
@@ -25,16 +26,18 @@ public class Communicate extends Thread {
 	SSLContext sslCntxt;
 	TrustManagerFactory trustManagerFactory;
 
-	public Communicate(Handler hanbler, KeyStore keyStore){
-		this.handler=handler;
+	public Communicate(Handler handler,InputStream keyStoreFile){
 		try{
+			KeyStore keyStore=KeyStore.getInstance("BKS");
+			keyStore.load(keyStoreFile,"mangokey".toCharArray());
 			sslCntxt=SSLContext.getInstance("TLS");
-			trustManagerFactory=TrustManagerFactory.getInstance("X509");
+
+			trustManagerFactory=TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
 			trustManagerFactory.init(keyStore);
 
 			sslCntxt.init(null,trustManagerFactory.getTrustManagers(),null);
 
-			sock=sslCntxt.getSocketFactory().createSocket("192.168.1.70",2025);
+			this.handler=handler;
 		}catch(IOException e){
 			throw new RuntimeException(e);
 		} catch (NoSuchAlgorithmException e) {
@@ -43,11 +46,14 @@ public class Communicate extends Thread {
 			throw new RuntimeException(e);
 		} catch (KeyManagementException e) {
 			throw new RuntimeException(e);
+		} catch (CertificateException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	@Override
 	public void run(){
 		try {
+			sock=sslCntxt.getSocketFactory().createSocket("172.30.1.35",2025);
 			InputStream input=sock.getInputStream();
 			Message msg=handler.obtainMessage();
 			byte[] data=new byte[1024];
@@ -60,12 +66,18 @@ public class Communicate extends Thread {
 
 	}
 	public void Send(){
-		try {
-			OutputStream output=sock.getOutputStream();
-			output.write("hello TLS server!".getBytes());
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		new Thread(new Runnable(){
+			@Override
+			public void run(){
+				try {
+					OutputStream output=sock.getOutputStream();
+					output.write("hello TLS server!".getBytes());
+				} catch (IOException e) {
+					throw new RuntimeException(e);
+				}
+			}
+		}).start();
+
 
 	}
 }

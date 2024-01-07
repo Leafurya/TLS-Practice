@@ -2,6 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include <iostream>
+#include <winsock2.h>
 #include <openssl/ssl.h>
 #include <openssl/err.h>
 
@@ -9,8 +10,10 @@
 #pragma comment(lib,"libcrypto.lib")
 #pragma comment(lib,"ws2_32.lib")
 
-#define CRT "D:\\OpenSSL\\private\\private.crt"
-#define KEY "D:\\OpenSSL\\private\\private.key"
+//#define CRT "D:\\OpenSSL\\private\\private.crt"
+//#define KEY "D:\\OpenSSL\\private\\private.key"
+#define CRT "E:\\desktop-share\\private\\private.crt"
+#define KEY "E:\\desktop-share\\private\\private.key"
 
 int main()
 {
