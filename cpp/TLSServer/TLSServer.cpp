@@ -12,8 +12,8 @@
 
 //#define CRT "D:\\OpenSSL\\private\\private.crt"
 //#define KEY "D:\\OpenSSL\\private\\private.key"
-#define CRT "E:\\desktop-share\\private\\private.crt"
-#define KEY "E:\\desktop-share\\private\\private.key"
+#define CRT "private.crt"
+#define KEY "private.key"
 
 int main()
 {

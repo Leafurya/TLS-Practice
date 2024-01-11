@@ -74,6 +74,10 @@
     <ExternalIncludePath>D:\OpenSSL\OpenSSL-Win64\include;E:\OpenSSL-Win64\include;$(ExternalIncludePath)</ExternalIncludePath>
     <LibraryPath>D:\OpenSSL\OpenSSL-Win64\lib\VC\x64\MD;E:\OpenSSL-Win64\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ExternalIncludePath>D:\OpenSSL\OpenSSL-Win64\include;$(ExternalIncludePath)</ExternalIncludePath>
+    <LibraryPath>D:\OpenSSL\OpenSSL-Win64\lib\VC\x64\MD;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
