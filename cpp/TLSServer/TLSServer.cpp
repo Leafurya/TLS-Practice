@@ -10,8 +10,6 @@
 #pragma comment(lib,"libcrypto.lib")
 #pragma comment(lib,"ws2_32.lib")
 
-//#define CRT "D:\\OpenSSL\\private\\private.crt"
-//#define KEY "D:\\OpenSSL\\private\\private.key"
 #define CRT "private.crt"
 #define KEY "private.key"
 
@@ -89,8 +87,9 @@ int main()
     if ((err) == -1) { ERR_print_errors_fp(stderr); exit(2); }
 
     printf("recv data: %s\n", buf);
+    
 
-    err = SSL_write(ssl, "Hello TLS!", 11);
+    err = SSL_write(ssl, "MSG from server", 15);
     if ((err) == -1) { ERR_print_errors_fp(stderr); exit(2); }
 
     closesocket(servSock);

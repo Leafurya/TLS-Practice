@@ -1,28 +1,55 @@
 package TLSClient;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
+import java.security.KeyManagementException;
 import java.security.KeyStore;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 
 import javax.net.SocketFactory;
+import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManagerFactory;
 
 public class TLSClient {
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
-		SocketFactory factory=SSLSocketFactory.getDefault();
+//		SocketFactory factory=SSLSocketFactory.getDefault();
+		SSLContext sslCntxt;
+		try{
+			InputStream storeFile=new FileInputStream("keystoreForCPP");
+			KeyStore store=KeyStore.getInstance(KeyStore.getDefaultType());
+			store.load(storeFile,"mangokey".toCharArray());
+			sslCntxt=SSLContext.getInstance("TLS");
+			
+			TrustManagerFactory trustManagerFactory;
+			trustManagerFactory=TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+			trustManagerFactory.init(store);
+
+			sslCntxt.init(null,trustManagerFactory.getTrustManagers(),null);
+		}catch(IOException e){
+			throw new RuntimeException(e);
+		} catch (NoSuchAlgorithmException e) {
+			throw new RuntimeException(e);
+		} catch (KeyStoreException e) {
+			throw new RuntimeException(e);
+		} catch (KeyManagementException e) {
+			throw new RuntimeException(e);
+		} catch (CertificateException e) {
+			throw new RuntimeException(e);
+		}
 		try {
-			Socket sock=factory.createSocket("192.168.1.70",2025);
+			Socket sock=sslCntxt.getSocketFactory().createSocket("192.168.1.70",2025);
 			InputStream input=sock.getInputStream();
 			OutputStream output=sock.getOutputStream();
 			
-			String msg="hello java TLS server!";
+			String msg="MSG from client";
 			System.out.println("send: "+msg);
 			byte[] data=new byte[1024];
 			
@@ -41,4 +68,5 @@ public class TLSClient {
  * keytool로 서버의 인증서, 서버의 키스토어를 export 한다.
  * export한 파일을 클라쪽에서 keytool를 이용해 import 한다.
  * 그럼 됨.
+ * -Djavax.net.ssl.trustStore=D:\GitHub\TLS-Practice\java\TLSClient\keystoreForCPP -Djavax.net.ssl.trustStorePassword=mangokey
  */

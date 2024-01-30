@@ -68,7 +68,7 @@ int main()
 
     X509_free(server_cert);
 
-    err = SSL_write(ssl, "hello TLS server!", strlen("hello TLS server!"));
+    err = SSL_write(ssl, "MSG from client", strlen("MSG from client"));
     CHK_SSL(err);
 
     char buf[1024] = { 0 };

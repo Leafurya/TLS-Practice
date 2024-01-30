@@ -53,7 +53,7 @@ public class Communicate extends Thread {
 	@Override
 	public void run(){
 		try {
-			sock=sslCntxt.getSocketFactory().createSocket("172.30.1.35",2025);
+			sock=sslCntxt.getSocketFactory().createSocket("192.168.1.70",2025);
 			InputStream input=sock.getInputStream();
 			Message msg=handler.obtainMessage();
 			byte[] data=new byte[1024];
@@ -71,13 +71,11 @@ public class Communicate extends Thread {
 			public void run(){
 				try {
 					OutputStream output=sock.getOutputStream();
-					output.write("hello TLS server!".getBytes());
+					output.write("MSG from client".getBytes());
 				} catch (IOException e) {
 					throw new RuntimeException(e);
 				}
 			}
 		}).start();
-
-
 	}
 }
