@@ -32,7 +32,7 @@ int main()
 
     SOCKADDR_IN clntAddr;
     int addrLen = sizeof(clntAddr);
-    clntSock = accept(servSock, (SOCKADDR*)&clntAddr, &addrLen);
+    clntSock = accept(servSock, (SOCKADDR*)&clntAddr, &addrLen);                                                       
     printf("connect: %s\n", inet_ntoa(clntAddr.sin_addr));
 
     char buf[1024] = { 0 };

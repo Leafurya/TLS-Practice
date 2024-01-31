@@ -1,1 +1,2 @@
 D:\GitHub\TLS-Practice\cpp\TLSClient\x64\Release\TLSClient.exe
+E:\GitHub\TLS-Practice\cpp\TLSClient\x64\Release\TLSClient.exe

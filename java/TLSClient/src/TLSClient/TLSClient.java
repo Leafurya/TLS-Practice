@@ -13,6 +13,7 @@ import java.security.cert.CertificateException;
 
 import javax.net.SocketFactory;
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 import javax.net.ssl.TrustManagerFactory;
 
@@ -23,7 +24,7 @@ public class TLSClient {
 //		SocketFactory factory=SSLSocketFactory.getDefault();
 		SSLContext sslCntxt;
 		try{
-			InputStream storeFile=new FileInputStream("keystoreForCPP");
+			InputStream storeFile=new FileInputStream("keystore");
 			KeyStore store=KeyStore.getInstance(KeyStore.getDefaultType());
 			store.load(storeFile,"mangokey".toCharArray());
 			sslCntxt=SSLContext.getInstance("TLS");
@@ -45,7 +46,7 @@ public class TLSClient {
 			throw new RuntimeException(e);
 		}
 		try {
-			Socket sock=sslCntxt.getSocketFactory().createSocket("192.168.1.70",2025);
+			Socket sock=sslCntxt.getSocketFactory().createSocket("192.168.0.3",2025);
 			InputStream input=sock.getInputStream();
 			OutputStream output=sock.getOutputStream();
 			

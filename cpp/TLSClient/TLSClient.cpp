@@ -19,6 +19,24 @@ int main()
     SSL_CTX* ctx;
     SSL* ssl;
 
+    char request[] = ":authority: www.naver.com\n\r\
+ :method: GET\n\r\
+ :path: /\n\r\
+ : scheme : https\n\r\
+ accept : text / html, application / xhtml + xml, application / xml; q = 0.9, image / avif, image / webp, image / apng, */*;q=0.8,application/signed-exchange;v=b3;q=0.7\n\r\
+ accept-encoding: gzip, deflate, br\n\r\
+ accept-language: en-US,en;q=0.9\n\r\
+ cache-control: max-age=0\n\r\
+ cookie: PM_CK_loc=3c860616080e1d3213ae4c2aae7241c88ed50197fa2a85ace57cef8fb93d4169; SB_MODE=plusdeal; NNB=JDPYIFDNNA4WI\n\r\
+ sec-ch-ua-mobile: ?0\n\r\
+ sec-ch-ua-platform: \"Windows\"\n\r\
+ sec-fetch-dest: document\n\r\
+ sec-fetch-mode: navigate\n\r\
+ sec-fetch-site: none\n\r\
+ sec-fetch-user: ?1\n\r\
+ upgrade-insecure-requests: 1\n\r\
+ user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36\n\r";
+
     SSL_load_error_strings();
     SSLeay_add_ssl_algorithms();
 
@@ -37,8 +55,8 @@ int main()
 
     memset(&addr, 0, sizeof(addr));
     addr.sin_family = AF_INET;
-    addr.sin_port = htons(2025);
-    addr.sin_addr.S_un.S_addr = inet_addr("192.168.1.70");
+    addr.sin_port = htons(443);
+    addr.sin_addr.S_un.S_addr = inet_addr("223.130.195.200");
 
     err = connect(sock, (SOCKADDR*)&addr, sizeof(addr));
     CHK_ERR(err, "connect");
@@ -68,7 +86,7 @@ int main()
 
     X509_free(server_cert);
 
-    err = SSL_write(ssl, "MSG from client", strlen("MSG from client"));
+    err = SSL_write(ssl, request, strlen(request));
     CHK_SSL(err);
 
     char buf[1024] = { 0 };
